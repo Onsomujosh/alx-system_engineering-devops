@@ -6,3 +6,5 @@
 5. display current directory contents
 6. creates a directory in another directory
 7. Move the file betty from /tmp/ to /tmp/my_first_directory
+8. delete the file betty
+
