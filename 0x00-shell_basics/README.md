@@ -9,3 +9,4 @@
 8. delete the file betty
 9. delete the direcory my_first_directory in the /tmp directory
 10. changes the working directory to the previous one
+11. lists all files, even hidden, in the current directory and the parent of the working directory and the /boot directory in long format.
