@@ -4,3 +4,4 @@
 3. display current directory contents in long format
 4. display current directory contents, including hidden files, using long format
 5. display current directory contents
+6. creates a directory in another directory
