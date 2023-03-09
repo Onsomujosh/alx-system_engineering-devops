@@ -11,3 +11,4 @@
 10. changes the working directory to the previous one
 11. lists all files, even hidden, in the current directory and the parent of the working directory and the /boot directory in long format.
 12. prints the type of the file named iamafile in the /tmp directory
+13. create a symbolic link to /bin/ls, names __ls__
