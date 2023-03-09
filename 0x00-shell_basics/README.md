@@ -11,4 +11,5 @@
 10. changes the working directory to the previous one
 11. lists all files, even hidden, in the current directory and the parent of the working directory and the /boot directory in long format.
 12. prints the type of the file named iamafile in the /tmp directory
-13. create a symbolic link to /bin/ls, names __ls__
+13. create a symbolic link to /bin/ls, names __ls_
+14. copies all the HTML files from the current working directory to the parent of the working directory, but only copy files that did not exist in the parent of the working directory or were newer than the version in the parent of the working directory.
