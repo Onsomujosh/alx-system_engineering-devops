@@ -1,2 +1,2 @@
-ls -am
-ls -CF
+#!/bin/bash
+ls -am -CF
