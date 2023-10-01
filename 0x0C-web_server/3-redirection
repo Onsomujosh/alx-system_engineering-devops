@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-
-#!/usr/bin/env bash
 # Script that configures a new Ubuntu machine to respect above requirements
 
 sudo apt-get update
