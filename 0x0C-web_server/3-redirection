@@ -1,28 +1,13 @@
 #!/usr/bin/env bash
 
-# Define the target URL where /redirect_me should redirect to
-TARGET_URL="https://onsomu.tech/new-page"
+#!/usr/bin/env bash
+# Script that configures a new Ubuntu machine to respect above requirements
 
-# Create an Nginx configuration file for the redirection
-echo "server {
-    listen 80;
-    onsomu.tech;
+sudo apt-get update
+sudo apt-get install -y nginx
 
-    location /redirect_me {
-        return 301 onsomu.tech;
-    }
+echo "Hello World!" | sudo tee /var/www/html/index.html
+string_for_replacement="server_name _;\n\trewrite ^\/redirect_me https:\/\/www.onsomu.tech;"
+sudo sed -i "s/server_name _;/$string_for_replacement/" /etc/nginx/sites-enabled/default
 
-}" | sudo tee /etc/nginx/sites-available/redirect_me.conf
-
-# Create a symbolic link to enable the site
-sudo ln -s /etc/nginx/sites-available/redirect_me.conf /etc/nginx/sites-enabled/
-
-# Test Nginx configuration
-sudo nginx -t
-
-# If the configuration test is successful, reload Nginx to apply changes
-if [ $? -eq 0 ]; then
-    sudo systemctl reload nginx
-else
-    echo "Nginx configuration test failed. Please check your configuration."
-fi
+sudo service nginx restart
