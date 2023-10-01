@@ -9,7 +9,7 @@ echo "server {
     onsomu.tech;
 
     location /redirect_me {
-        return 301 $TARGET_URL;
+        return 301 onsomu.tech;
     }
 
 }" | sudo tee /etc/nginx/sites-available/redirect_me.conf
