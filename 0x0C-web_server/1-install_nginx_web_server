@@ -1,24 +1,17 @@
 #!/usr/bin/env bash
-# Install nginx webserver
+# install a nginx webserver
 apt-get update
 apt-get install -y nginx
 
-mkdir -p /var/www/html
-echo "Hello World!" > /var/www/html/index.html
-cat <<EOF > /etc/nginx/sites-available/default
-server {
+mkdir /etc/nginx/html
+touch /etc/nginx/html/index.html
+echo "Hello World!" > /etc/nginx/html/index.html
+printf %s "server {
      listen      80 default_server;
      listen      [::]:80 default_server;
-     root        /var/www/html;
+     root        /etc/nginx/html;
      index       index.html index.htm;
-
-     location / {
-        root /var/www/html;
-	index index.html;
-     }
 }
-EOF
-
-ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+" > /etc/nginx/sites-available/default
 
 service nginx restart
