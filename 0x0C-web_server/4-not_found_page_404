@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-
-# Update and install Nginx
+# Configure Nginx so that its HTTP response contains a custom header
 sudo apt-get update -y
 sudo apt-get upgrade -y
 sudo apt-get install -y nginx
