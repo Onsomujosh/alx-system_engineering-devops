@@ -5,21 +5,22 @@
 # Make sure that HAProxy can be managed via an init script
 # Install and configure HAproxy on my lb-01 server.
 sudo apt-get -y update
-apt-get -y install haproxy
+sudo apt-get install --no-install-recommends software-properties-common
+sudo add-apt-repository ppa:vbernat/haproxy-2.8
+sudo apt-get install haproxy=2.8.\*
 
+sudo cp -a /etc/haproxy/haproxy.cfg{,.original_copy}
 # edit config file
-server_config=\
-"
-frontend
+config_snippet="
+frontend app_frontend
         bind *:80
         mode http
-        default_backend
-backend
+        default_backend app_backend
+backend app_backend
         balance roundrobin
         server 63210-web-01 34.227.101.136 check
-        server 63210-web-02 100.26.20.71 check
-"
-echo "$server_config" | sudo tee -a /etc/haproxy/haproxy.cfg
+        server 63210-web-02 100.26.20.71 check"
+echo "$config_snippet" | sudo tee -a /etc/haproxy/haproxy.cfg.original_copy
 
 # enable haproxy to be started by init script
 
