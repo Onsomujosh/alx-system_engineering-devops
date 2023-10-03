@@ -1,11 +1,21 @@
 #!/usr/bin/env bash
 # Script that configures a new Ubuntu machine to respect above requirements
 
-sudo apt-get update
+sudo apt-get update -y
+sudo apt-get upgrade -y
 sudo apt-get install -y nginx
 
+sudo ufw allow 'Nginx HTTP'
 echo "Hello World!" | sudo tee /var/www/html/index.html
-string_for_replacement="server_name _;\n\trewrite ^\/redirect_me https:\/\/www.onsomu.tech;"
-sudo sed -i "s/server_name _;/$string_for_replacement/" /etc/nginx/sites-enabled/default
+printf %s "server {
+    listen 80;
+    listen [::]:80 default_server;
+    root   /etc/nginx/html;
+    index  index.html index.htm;
+
+    location /redirect_me {
+        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+    }
+}" | sudo tee /etc/nginx/sites-available/default
 
 sudo service nginx restart
