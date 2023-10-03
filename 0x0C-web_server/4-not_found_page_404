@@ -1,15 +1,21 @@
 #!/usr/bin/env bash
 
 # Update and install Nginx
-sudo apt-get update
+sudo apt-get update -y
+sudo apt-get upgrade -y
 sudo apt-get install -y nginx
 
-# Create a custom 404 page with the string "Ceci n'est pas une page"
+sudo ufw allow 'Nginx HTTP'
+echo "Hello World!" | sudo tee /var/www/html/index.html
 echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
+printf %s "server {
+    listen 80;
+    listen [::]:80 default_server;
+    root   /etc/nginx/html;
+    index  index.html index.htm;
 
-# Configure Nginx to use the custom 404 page and return a 404 error code
-config_string="error_page 404 /404.html;\nlocation = /404.html {\n    root /var/www/html;\n    internal;\n}"
-sudo sed -i "/server_name _;/a $config_string" /etc/nginx/sites-enabled/default
-
-# Reload Nginx to apply the changes
+    location /redirect_me {
+        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+    }
+}" | sudo tee /etc/nginx/sites-available/default
 sudo systemctl reload nginx

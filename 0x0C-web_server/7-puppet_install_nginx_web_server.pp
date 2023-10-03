@@ -1,44 +1,25 @@
-# Puppet manifest to install and configure Nginx with a 301 redirect
+# Script to install nginx using puppet
 
-# Install Nginx package
-package { 'nginx':
+package {'nginx':
   ensure => 'present',
 }
 
-# Create the default Nginx configuration file
-file { '/etc/nginx/sites-available/default':
-  ensure  => 'present',
-  content => template('nginx/default.erb'),
+exec {'install':
+  command  => 'sudo apt-get update ; sudo apt-get -y install nginx',
+  provider => shell,
+
 }
 
-# Define a custom Nginx configuration template
-file { '/etc/nginx/sites-available/default':
-  ensure  => 'present',
-  content => template('nginx/default.erb'),
-  notify  => Service['nginx'],
+exec {'Hello':
+  command  => 'echo "Hello World!" | sudo tee /var/www/html/index.html',
+  provider => shell,
 }
 
-# Ensure Nginx service is running and enabled
-service { 'nginx':
-  ensure  => 'running',
-  enable  => true,
+exec {'sudo sed -i "s/listen 80 default_server;/listen 80 default_server;\\n\\tlocation \/redirect_me {\\n\\t\\treturn 301 https:\/\/blog.ehoneahobed.com\/;\\n\\t}/" /etc/nginx/sites-available/default':
+  provider => shell,
 }
 
-# Create the document root directory
-file { '/var/www/html':
-  ensure => 'directory',
-}
-
-# Create an index.html file with "Hello World!" content
-file { '/var/www/html/index.html':
-  ensure  => 'present',
-  content => 'Hello World!',
-  require => Package['nginx'],
-}
-
-# Configure Nginx to listen on port 80
-file { '/etc/nginx/sites-available/default':
-  ensure  => 'present',
-  content => template('nginx/default.erb'),
-  notify  => Service['nginx'],
+exec {'run':
+  command  => 'sudo service nginx restart',
+  provider => shell,
 }
