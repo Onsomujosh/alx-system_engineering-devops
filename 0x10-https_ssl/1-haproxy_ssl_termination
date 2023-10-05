@@ -46,5 +46,5 @@ frontend onsomu-frontend-https
 
 backend onsomu-backend
         balance roundrobin
-        server 339356-web-01 34.227.101.136 check
-        server 339356-web-02 100.26.20.71 check
+        server 339356-web-01 34.227.101.136:80 check
+        server 339356-web-02 100.26.20.71:80 check
