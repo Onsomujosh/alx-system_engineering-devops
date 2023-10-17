@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# MySQL backup with compression
+mysql_password="$1"
+date=$(date +'%d-%m-%Y')
+backup_dir="/path/to/backup/directory"
+dump_file="${backup_dir}/backup.sql"
+archive_name="${backup_dir}/${date}.tar.gz"
+
+# Create a MySQL dump
+mysqldump -u root -p"${mysql_password}" --all-databases > "${dump_file}"
+
+if [ $? -eq 0 ]; then
+    # Compress the backup using tar
+    tar -czf "${archive_name}" -C "${backup_dir}" "backup.sql"
+    if [ $? -eq 0 ]; then
+        echo "Backup successfully created and compressed: ${archive_name}"
+        # Optionally, you can remove the original SQL dump
+        rm "${dump_file}"
+    else
+        echo "Failed to compress the backup."
+    fi
+else
+    echo "Failed to create MySQL dump. Check your MySQL root password and permissions."
+fi
