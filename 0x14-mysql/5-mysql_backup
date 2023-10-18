@@ -2,7 +2,7 @@
 # MySQL backup with compression
 mysql_password="$1"
 date=$(date +'%d-%m-%Y')
-backup_dir="/path/to/backup/directory"
+backup_dir="/var/backup"
 dump_file="${backup_dir}/backup.sql"
 archive_name="${backup_dir}/${date}.tar.gz"
 
