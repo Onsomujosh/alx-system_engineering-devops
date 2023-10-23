@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """fetches information from JSONplaceholder API and exports to JSON"""
 
-import json
+from json import dump
 from requests import get
 from sys import argv
 
@@ -15,14 +15,10 @@ if __name__ == "__main__":
 
     todo_list = []
     for todo in todo_result:
-        todo_dict = {
-            "task": todo.get("title"),
-            "completed": todo.get("completed"),
-            "username": name_result.get("username")
-        }
+        todo_dict = {}
+        todo_dict.update({"task": todo.get("title"), "completed": todo.get(
+            "completed"), "username": name_result.get("username")})
         todo_list.append(todo_dict)
 
-    data = {argv[1]: todo_list}
-
     with open("{}.json".format(argv[1]), 'w') as f:
-        json.dump(data, f)
+        dump({argv[1]: todo_list}, f)
