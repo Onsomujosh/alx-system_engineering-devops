@@ -1,37 +1,24 @@
 #!/usr/bin/python3
-'''This script  returns information about his/her
-TODO list progress using RestApi'''
-import requests
-import sys
+"""
+Uses the JSON placeholder api to query data about an employee
+"""
 
+from requests import get
+from sys import argv
 
 if __name__ == '__main__':
-    try:
-        employee_id = int(sys.argv[1])
-    except ValueError:
-        exit()
+    main_url = 'https://jsonplaceholder.typicode.com'
+    todo_url = main_url + "/user/{}/todos".format(argv[1])
+    name_url = main_url + "/users/{}".format(argv[1])
+    todo_result = get(todo_url).json()
+    name_result = get(name_url).json()
 
-    base_url = 'https://jsonplaceholder.typicode.com'
-    user_url = '{api}/users/{id}'.format(api=base_url, id=employee_id)
-    todo_url = '{user_url}/todos'.format(user_url=user_url)
-
-    '''get the user's response'''
-    res = requests.get(user_url).json()
-    '''get the employee name'''
-    name = res.get('name')
-    '''Get the todo response'''
-    res = requests.get(todo_url).json()
-    '''get total number of tasks'''
-    total_tasks = len(res)
-    '''get the incompleted tasks'''
-    non_completed = sum([elem['completed'] is False for elem in res])
-    '''get completed tasks'''
-    completed_tasks = total_tasks - non_completed
-    str = ("Employee {emp_name} is done with tasks" +
-           "({completed_tasks}/{total_tasks}): ")
-    print(str.format(emp_name=name, completed_tasks=completed_tasks,
-                     total_tasks=total_tasks))
-    '''print the the complete tasks'''
-    for elem in res:
-        if elem.get('completed') is True:
-            print('\t', elem.get('title'))
+    todo_num = len(todo_result)
+    todo_complete = len([todo for todo in todo_result
+                         if todo.get("completed")])
+    name = name_result.get("name")
+    print("Employee {} is done with tasks({}/{}):"
+          .format(name, todo_complete, todo_num))
+    for todo in todo_result:
+        if (todo.get("completed")):
+            print("\t {}".format(todo.get("title")))
