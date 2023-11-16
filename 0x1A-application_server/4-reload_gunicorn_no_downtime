@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# Set the path to your Gunicorn executable
+GUNICORN_EXECUTABLE="/home/ubuntu/.local/bin/gunicorn"
+
+# Set the path to your Gunicorn configuration file
+GUNICORN_CONFIG_FILE="/etc/systemd/system/gunicorn.service"
+
+# Set the number of workers you want to gracefully restart
+NUM_WORKERS=4
+
+# Get the current process IDs of Gunicorn
+OLD_PROCESS_IDS=$(pgrep -f "$GUNICORN_EXECUTABLE $GUNICORN_CONFIG_FILE")
+
+# Send a graceful shutdown signal to the specified number of workers
+for pid in $OLD_PROCESS_IDS; do
+    kill -s TERM $pid
+    sleep 2 # Adjust the sleep time as needed
+done
+
+# Start new Gunicorn workers with the updated code or configuration
+$GUNICORN_EXECUTABLE -c $GUNICORN_CONFIG_FILE --workers $NUM_WORKERS &
+
+# Display a message indicating the reload process has started
+echo "Gunicorn reload initiated. Please check logs for progress."
