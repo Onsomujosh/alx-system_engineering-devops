@@ -1,3 +1,15 @@
 #!/usr/bin/env bash
+# Gracefully reload gunicorn
 
-kill -HUP "$pid"
+#get pids of workers
+worker_pids=$(pgrep gunicorn)
+
+if [[ -n "$worker_pids" ]]; then
+    # Send SIGHUP signal to each worker process
+    for pid in $worker_pids; do
+	    kill -HUP "$pid"
+    done
+    echo "Gunicorn workers gracefully reloaded."
+else
+    echo "No Gunicorn workers found."
+fi
